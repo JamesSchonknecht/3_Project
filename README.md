@@ -46,3 +46,40 @@ plt.show()
 - A very large proportion of Data Engineer jobs request SQL skills (63%), indicating it is extremely important to be highly proficient in SQL if targeting Data Engineer roles.
 - Top skills for Data Scientists are similar to Data Engineers. R programming only appears as a top skill for Data Scientists (26%) as it is particularly useful for statistical analysis, although, it is notably less in-demand than Python (47%).
 - AWS (18%) and Azure (16%) demonstrate the experience with cloud computing platforms is important for the Data Scientist role.
+
+## 2. How are the top 5 most in-demand skills for data analysts trending?
+
+### Visualise Data
+
+```python
+df_plot = df_DA_aus_percent.iloc[:, :5]
+
+sns.lineplot(data=df_plot, dashes=False, palette='tab10')
+sns.set_theme(style='ticks')
+plt.title('Trends for Top 5 Data Analyst Skills in Australia', fontsize=15)
+plt.xlabel('2023')
+plt.ylabel('Chance of Being Required by Job Posting')
+plt.legend().remove()
+sns.despine()
+
+from matplotlib.ticker import PercentFormatter
+ax = plt.gca()
+ax.yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+for i in range(df_plot.shape[1]):
+    plt.text(x=11.2, y=df_plot.iloc[-1, i], s=df_plot.columns[i])
+
+plt.tight_layout()
+plt.show()
+```
+
+### Results
+
+![Visualisation of Trends for Top 5 Most In-Demand Data Analyst Skills](images/data_analyst_trending_skills.png)
+
+### Insights
+
+- SQL is consistently the most in-demand skill throughout the year by a significant margin, hovering between 45%-50%, and demand for SQL remains relatively stable over time compared to the other skills. Therefore, SQL is an essential skill to learn when targeting Data Analyst roles.
+- All of these top 5 skills show peak demand around June. This suggests mid-year hiring may favour more technically-diverse candidates.
+- Demand for both Power BI and Tableau shows a significant mid-year peak, with lower demand in the early (Jan-Apr) and late months (Sept-Dec). Therefore, if applying for roles around mid-year, it may be more important to showcase projects which use these visualisation tools.
+- Demand for Tableau is relatively low, with volatile month-to-month shifts and large spike in June. Therefore, Tableau can be de-prioritised and focus given to the other more in-demand skills.
