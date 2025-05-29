@@ -83,3 +83,86 @@ plt.show()
 - All of these top 5 skills show peak demand around June. This suggests mid-year hiring may favour more technically-diverse candidates.
 - Demand for both Power BI and Tableau shows a significant mid-year peak, with lower demand in the early (Jan-Apr) and late months (Sept-Dec). Therefore, if applying for roles around mid-year, it may be more important to showcase projects which use these visualisation tools.
 - Demand for Tableau is relatively low, with volatile month-to-month shifts and large spike in June. Therefore, Tableau can be de-prioritised and focus given to the other more in-demand skills.
+
+## 3. How much are each of the most popular data roles paid?
+
+### Visualise Data
+
+```python
+sns.boxplot(data=df_top_8, x='salary_year_avg', y='job_title_short', order=job_order, color='green')
+sns.set_theme(style='ticks')
+plt.title('Salary Distributions for Top 8 Data Jobs in Australia')
+plt.xlabel('Yearly Salary ($AUD)')
+plt.ylabel('')
+ticks_x = plt.FuncFormatter(lambda x, pos: f'${int(x/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.tight_layout()
+plt.show()
+```
+
+### Results
+![Salary Distributions for Top 8 Data Roles](images/top_8_roles_salary_distributions.png)
+
+### Insights
+
+- There is a significant difference in median yearly salaries between the highest paid role (Senior Data Scientist) and the lowest paid role (Business Analyst), indicating there is high value placed on advanced skills and experience within the industry.
+- Salary ranges vary widely between different roles, with Software Engineer roles showing a massive variation in salary. This is due to the wide scope of jobs encompassed by the 'Software Engineer' title, including both Junior and Senior level roles, different responsibilities and specialisations (e.g. backend vs frontend vs cybersecurity e.t.c.). Similarly for the other roles, those with wider salary distributions encompass a wider range of experience levels and different specialisations.
+- Very little variation in salary distribution is apparent for Senior Data Scientist Roles. This might indicate that more senior roles are more standardised in salary rates. However, for this role, there were only 5 job postings, so it is likely a coincidence that all 5 postings had very similar salaries.
+- Most roles have a right-skewed distribution of salaries, indicating that a large proportion of salaries lies towards the lower end of the distribution, with a smaller number of roles being paid much more than the typical salary. These may be more roles that are niche, require more years of experience, or more demand specialised skills.
+- Interestingly, for this data set, Data Analyst roles typically pay more than Data Engineer roles. This is most likely due to the small number of job postings within Australia captured within this dataset for these roles, as Data Engineer roles usually demand more advanced technical skills and experience than Data Analyst roles.
+
+## 4. What is the most optimal skill to learn for Data Analysts?
+
+### Visualise Data
+
+```python
+from adjustText import adjust_text
+
+# df_plot.plot(kind='scatter', x='skill_percent', y='median_salary')
+plt.figure(figsize=(7, 5))
+sns.scatterplot(
+    data=df_plot,
+    x='skill_percent',
+    y='median_salary',
+    hue='technology'
+)
+
+sns.despine()
+sns.set_theme(style='ticks')
+plt.title('Most Optimal Skills for Data Analysts in the US')
+plt.ylabel('Median Yearly Salary ($USD)')
+plt.xlabel('Percent of Data Analyst Jobs')
+
+texts = []
+for i, txt in enumerate(df_DA_skills_high_demand.index):
+    texts.append(plt.text(df_DA_skills_high_demand['skill_percent'].iloc[i], df_DA_skills_high_demand['median_salary'].iloc[i], txt))
+
+from matplotlib.ticker import PercentFormatter
+ax = plt.gca()
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, pos: f'${int(y/1000)}K'))
+ax.xaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+adjust_text(
+    texts,
+    expand_text=(1.2, 1.4),
+    expand_points=(1.2, 1.4),
+    arrowprops=dict(arrowstyle='-', color='gray', lw=1),
+    force_text=1
+)
+
+plt.tight_layout()
+plt.show()
+```
+
+### Results
+
+![Most Optimal Skills for Data Analysts in the US](images/us_data_analysts_optimal_skills_scatterplot.png)
+
+### Insights
+
+- SQL is the most in-demand skill, appearing in almost 60% of all job postings. It is a foundational skill for landing both junior and senior level jobs, meaning the average salary for this skill is not as high as some more specialised skills. For increasing chances of landing a job as a Data Analyst, SQL should be the number one priority.
+- Excel is also required by a large proportion of Data Analyst jobs, and is a good secondary target following building proficiency in SQL in order to maximise chances of securing a Data Analyst job.
+- Python is the highest paid skill for Data Analysts in the US. Although there is not as much demand for Python as for SQL or Excel, it is likely the most valuable up-skilling target for Data Analysts in order to increase earning potential.
+- Compared to other categories, `programming` tools (colored blue) tend to be found at higher salary levels, indicating learning these skills may come with higher salary benefits for Data Analysts.
+- The skills within the `analyst_tools` category are associated with lower salaries. Powerpoint and Word fall under this category, and are associated with both low salary and low demand. Therefore, although still useful, learning these tools should be deprioritised compared to most other tools shown in the visualisation.
+- Oracle is the only skill within the `cloud` category. It has a very high associated salary, but is in very low demand compared to other skills, suggesting it might be needed for some niche, specialised, highly paid Data Analyst jobs. It might be worth considering up-skilling in Oracle if working in a field or targeting a field that uses this technology frequently.
